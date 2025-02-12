@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="style.css" />
+    <title>To Do List</title>
+  </head>
+  <body>
+    <h1>To Do List</h1>
+    <div>
+      <input type="text" id="inp" placeholder="Organize your day..." />
+      <button type="submit" id="add"> + Add</button>
+      <button type="submit" id="erase">Delete all</button>
+      <button id="done"> ✔ Done Tasks</button>
+      <ul id="list"></ul>
+    </div>
+    <div id="dones">
+      <h2>✔ Done Tasks:  <button onclick="clean()">Clean out</button></h2>
+      <ul id="donelist"></ul>
+    </div>
+
+    <script>
+      const inp = document.getElementById('inp');
+      const add = document.getElementById('add');
+      const erase = document.getElementById('erase');
+      const list = document.getElementById('list');
+      const done = document.getElementById('done');
+      const dones = document.getElementById('dones');
+      const donelist = document.getElementById('donelist');
+
+      const todoArr = [];
+      const doneArr = [];
+
+      add.onclick = function () {
+        todoArr.push(inp.value);
+        todo();
+        inp.value = '';
+      }
+
+      erase.onclick = function () {
+        if (todoArr.length > 0) {
+          for (let i = 0; i < todoArr.length; i++) {
+            doneArr.push(todoArr[i]);
+          }
+          todoArr.length = 0;
+          todo();
+          printdone();
+        }
+      }
+      function remove(j){
+        doneArr.push(todoArr[j]);
+        todoArr.splice(j, 1);
+        todo();
+        printdone();
+      }
+      function clean() {
+        doneArr.length = 0;
+        donelist.innerHTML = ''; 
+      }
+
+      function todo() {
+        list.innerHTML = '';
+        for (let i = 0; i < todoArr.length; i++) {
+          list.innerHTML += `<li>${todoArr[i]}<button onclick="remove(${i})">Remove</button></li>`
+        }
+      }
+      done.onclick = function(){
+        if (dones.style.display === "" || dones.style.display === "none") {
+          dones.style.display = "block";
+        } else {
+          dones.style.display = "none";
+        }
+      }
+      function printdone(){
+        donelist.innerHTML = '';
+        for (let i = 0; i < doneArr.length; i++) {
+          donelist.innerHTML += `<li>${doneArr[i]}</li>`
+          
+        }
+      }
+    </script>
+  </body>
+</html>
